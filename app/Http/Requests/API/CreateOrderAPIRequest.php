@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\Page;
+use App\Models\Order;
 use InfyOm\Generator\Request\APIRequest;
 
-class CreatePageAPIRequest extends APIRequest
+class CreateOrderAPIRequest extends APIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +24,6 @@ class CreatePageAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return Page::$rules;
+        return Order::$rules;
     }
 }

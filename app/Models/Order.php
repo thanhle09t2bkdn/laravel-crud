@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
- *      definition="Page",
- *      required={name, content},
+ *      definition="Order",
+ *      required={name},
  *      @SWG\Property(
  *          property="id",
  *          description="id",
@@ -19,27 +19,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          property="name",
  *          description="name",
  *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="content",
- *          description="content",
- *          type="string"
  *      )
  * )
  */
-class Page extends Model
+class Order extends Model
 {
     use SoftDeletes;
 
-    public $table = 'pages';
+    public $table = 'orders';
     
 
     protected $dates = ['deleted_at'];
 
 
     public $fillable = [
-        'name',
-        'content'
+        'name'
     ];
 
     /**
@@ -48,8 +42,7 @@ class Page extends Model
      * @var array
      */
     protected $casts = [
-        'name' => 'string',
-        'content' => 'string'
+        'name' => 'string'
     ];
 
     /**
@@ -58,7 +51,6 @@ class Page extends Model
      * @var array
      */
     public static $rules = [
-        'name' => 'required',
-        'content' => 'required'
+        'name' => 'required'
     ];
 }

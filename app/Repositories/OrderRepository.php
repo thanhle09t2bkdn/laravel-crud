@@ -2,17 +2,16 @@
 
 namespace App\Repositories;
 
-use App\Models\Page;
+use App\Models\Order;
 use InfyOm\Generator\Common\BaseRepository;
 
-class PageRepository extends BaseRepository
+class OrderRepository extends BaseRepository
 {
     /**
      * @var array
      */
     protected $fieldSearchable = [
-        'name',
-        'content'
+        'name'
     ];
 
     /**
@@ -20,6 +19,6 @@ class PageRepository extends BaseRepository
      **/
     public function model()
     {
-        return Page::class;
+        return Order::class;
     }
 }

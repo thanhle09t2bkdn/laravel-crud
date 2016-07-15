@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreatePageAPIRequest;
-use App\Http\Requests\API\UpdatePageAPIRequest;
-use App\Models\Page;
-use App\Repositories\PageRepository;
+use App\Http\Requests\API\CreateOrderAPIRequest;
+use App\Http\Requests\API\UpdateOrderAPIRequest;
+use App\Models\Order;
+use App\Repositories\OrderRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController as InfyOmBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
@@ -14,18 +14,18 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class PageController
+ * Class OrderController
  * @package App\Http\Controllers\API
  */
 
-class PageAPIController extends InfyOmBaseController
+class OrderAPIController extends InfyOmBaseController
 {
-    /** @var  PageRepository */
-    private $pageRepository;
+    /** @var  OrderRepository */
+    private $orderRepository;
 
-    public function __construct(PageRepository $pageRepo)
+    public function __construct(OrderRepository $orderRepo)
     {
-        $this->pageRepository = $pageRepo;
+        $this->orderRepository = $orderRepo;
     }
 
     /**
@@ -33,10 +33,10 @@ class PageAPIController extends InfyOmBaseController
      * @return Response
      *
      * @SWG\Get(
-     *      path="/pages",
-     *      summary="Get a listing of the Pages.",
-     *      tags={"Page"},
-     *      description="Get all Pages",
+     *      path="/orders",
+     *      summary="Get a listing of the Orders.",
+     *      tags={"Order"},
+     *      description="Get all Orders",
      *      produces={"application/json"},
      *      @SWG\Response(
      *          response=200,
@@ -50,7 +50,7 @@ class PageAPIController extends InfyOmBaseController
      *              @SWG\Property(
      *                  property="data",
      *                  type="array",
-     *                  @SWG\Items(ref="#/definitions/Page")
+     *                  @SWG\Items(ref="#/definitions/Order")
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -62,29 +62,29 @@ class PageAPIController extends InfyOmBaseController
      */
     public function index(Request $request)
     {
-        $this->pageRepository->pushCriteria(new RequestCriteria($request));
-        $this->pageRepository->pushCriteria(new LimitOffsetCriteria($request));
-        $pages = $this->pageRepository->all();
+        $this->orderRepository->pushCriteria(new RequestCriteria($request));
+        $this->orderRepository->pushCriteria(new LimitOffsetCriteria($request));
+        $orders = $this->orderRepository->all();
 
-        return $this->sendResponse($pages->toArray(), 'Pages retrieved successfully');
+        return $this->sendResponse($orders->toArray(), 'Orders retrieved successfully');
     }
 
     /**
-     * @param CreatePageAPIRequest $request
+     * @param CreateOrderAPIRequest $request
      * @return Response
      *
      * @SWG\Post(
-     *      path="/pages",
-     *      summary="Store a newly created Page in storage",
-     *      tags={"Page"},
-     *      description="Store Page",
+     *      path="/orders",
+     *      summary="Store a newly created Order in storage",
+     *      tags={"Order"},
+     *      description="Store Order",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="body",
      *          in="body",
-     *          description="Page that should be stored",
+     *          description="Order that should be stored",
      *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Page")
+     *          @SWG\Schema(ref="#/definitions/Order")
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -97,7 +97,7 @@ class PageAPIController extends InfyOmBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Page"
+     *                  ref="#/definitions/Order"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -107,13 +107,13 @@ class PageAPIController extends InfyOmBaseController
      *      )
      * )
      */
-    public function store(CreatePageAPIRequest $request)
+    public function store(CreateOrderAPIRequest $request)
     {
         $input = $request->all();
 
-        $pages = $this->pageRepository->create($input);
+        $orders = $this->orderRepository->create($input);
 
-        return $this->sendResponse($pages->toArray(), 'Page saved successfully');
+        return $this->sendResponse($orders->toArray(), 'Order saved successfully');
     }
 
     /**
@@ -121,14 +121,14 @@ class PageAPIController extends InfyOmBaseController
      * @return Response
      *
      * @SWG\Get(
-     *      path="/pages/{id}",
-     *      summary="Display the specified Page",
-     *      tags={"Page"},
-     *      description="Get Page",
+     *      path="/orders/{id}",
+     *      summary="Display the specified Order",
+     *      tags={"Order"},
+     *      description="Get Order",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of Page",
+     *          description="id of Order",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -144,7 +144,7 @@ class PageAPIController extends InfyOmBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Page"
+     *                  ref="#/definitions/Order"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -156,30 +156,30 @@ class PageAPIController extends InfyOmBaseController
      */
     public function show($id)
     {
-        /** @var Page $page */
-        $page = $this->pageRepository->find($id);
+        /** @var Order $order */
+        $order = $this->orderRepository->find($id);
 
-        if (empty($page)) {
-            return Response::json(ResponseUtil::makeError('Page not found'), 404);
+        if (empty($order)) {
+            return Response::json(ResponseUtil::makeError('Order not found'), 404);
         }
 
-        return $this->sendResponse($page->toArray(), 'Page retrieved successfully');
+        return $this->sendResponse($order->toArray(), 'Order retrieved successfully');
     }
 
     /**
      * @param int $id
-     * @param UpdatePageAPIRequest $request
+     * @param UpdateOrderAPIRequest $request
      * @return Response
      *
      * @SWG\Put(
-     *      path="/pages/{id}",
-     *      summary="Update the specified Page in storage",
-     *      tags={"Page"},
-     *      description="Update Page",
+     *      path="/orders/{id}",
+     *      summary="Update the specified Order in storage",
+     *      tags={"Order"},
+     *      description="Update Order",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of Page",
+     *          description="id of Order",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -187,9 +187,9 @@ class PageAPIController extends InfyOmBaseController
      *      @SWG\Parameter(
      *          name="body",
      *          in="body",
-     *          description="Page that should be updated",
+     *          description="Order that should be updated",
      *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Page")
+     *          @SWG\Schema(ref="#/definitions/Order")
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -202,7 +202,7 @@ class PageAPIController extends InfyOmBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Page"
+     *                  ref="#/definitions/Order"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -212,20 +212,20 @@ class PageAPIController extends InfyOmBaseController
      *      )
      * )
      */
-    public function update($id, UpdatePageAPIRequest $request)
+    public function update($id, UpdateOrderAPIRequest $request)
     {
         $input = $request->all();
 
-        /** @var Page $page */
-        $page = $this->pageRepository->find($id);
+        /** @var Order $order */
+        $order = $this->orderRepository->find($id);
 
-        if (empty($page)) {
-            return Response::json(ResponseUtil::makeError('Page not found'), 404);
+        if (empty($order)) {
+            return Response::json(ResponseUtil::makeError('Order not found'), 404);
         }
 
-        $page = $this->pageRepository->update($input, $id);
+        $order = $this->orderRepository->update($input, $id);
 
-        return $this->sendResponse($page->toArray(), 'Page updated successfully');
+        return $this->sendResponse($order->toArray(), 'Order updated successfully');
     }
 
     /**
@@ -233,14 +233,14 @@ class PageAPIController extends InfyOmBaseController
      * @return Response
      *
      * @SWG\Delete(
-     *      path="/pages/{id}",
-     *      summary="Remove the specified Page from storage",
-     *      tags={"Page"},
-     *      description="Delete Page",
+     *      path="/orders/{id}",
+     *      summary="Remove the specified Order from storage",
+     *      tags={"Order"},
+     *      description="Delete Order",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of Page",
+     *          description="id of Order",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -268,15 +268,15 @@ class PageAPIController extends InfyOmBaseController
      */
     public function destroy($id)
     {
-        /** @var Page $page */
-        $page = $this->pageRepository->find($id);
+        /** @var Order $order */
+        $order = $this->orderRepository->find($id);
 
-        if (empty($page)) {
-            return Response::json(ResponseUtil::makeError('Page not found'), 404);
+        if (empty($order)) {
+            return Response::json(ResponseUtil::makeError('Order not found'), 404);
         }
 
-        $page->delete();
+        $order->delete();
 
-        return $this->sendResponse($id, 'Page deleted successfully');
+        return $this->sendResponse($id, 'Order deleted successfully');
     }
 }

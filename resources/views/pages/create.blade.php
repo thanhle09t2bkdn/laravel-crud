@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    @include('core-templates::common.errors')
+        @include('adminlte-templates::common.errors')
 
     <div class="row">
         {!! Form::open(['route' => 'pages.store']) !!}

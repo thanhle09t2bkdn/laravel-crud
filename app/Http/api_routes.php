@@ -21,3 +21,5 @@ Route::resource('categories', 'CategoryAPIController');
 
 
 Route::resource('pages', 'PageAPIController');
+
+Route::resource('orders', 'OrderAPIController');
