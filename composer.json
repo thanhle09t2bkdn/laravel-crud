@@ -9,7 +9,7 @@
         "laravel/framework": "5.2.*",
         "infyomlabs/laravel-generator": "dev-master",
         "laravelcollective/html": "5.2.*",
-        "infyomlabs/core-templates": "dev-master",
+        "infyomlabs/adminlte-templates": "dev-master",
         "infyomlabs/swagger-generator": "dev-master",
         "jlapp/swaggervel": "dev-master",
         "doctrine/dbal": "~2.3",
