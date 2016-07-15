@@ -2,10 +2,10 @@
 
 namespace App\Repositories;
 
-use App\Models\Categories;
+use App\Models\Category;
 use InfyOm\Generator\Common\BaseRepository;
 
-class CategoriesRepository extends BaseRepository
+class CategoryRepository extends BaseRepository
 {
     /**
      * @var array
@@ -20,6 +20,6 @@ class CategoriesRepository extends BaseRepository
      **/
     public function model()
     {
-        return Categories::class;
+        return Category::class;
     }
 }

@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
-use App\Models\Food;
+use App\Models\Category;
 
-class UpdateFoodRequest extends Request
+class UpdateCategoryRequest extends Request
 {
 
     /**
@@ -25,6 +25,6 @@ class UpdateFoodRequest extends Request
      */
     public function rules()
     {
-        return Food::$rules;
+        return Category::$rules;
     }
 }

@@ -16,3 +16,5 @@
 Route::resource('categories', 'CategoriesAPIController');
 
 Route::resource('foods', 'FoodAPIController');
+
+Route::resource('categories', 'CategoryAPIController');

@@ -3,9 +3,9 @@
 namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
-use App\Models\Food;
+use App\Models\Test;
 
-class UpdateFoodRequest extends Request
+class UpdateTestRequest extends Request
 {
 
     /**
@@ -25,6 +25,6 @@ class UpdateFoodRequest extends Request
      */
     public function rules()
     {
-        return Food::$rules;
+        return Test::$rules;
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
- *      definition="Categories",
+ *      definition="Category",
  *      required={name, image},
  *      @SWG\Property(
  *          property="id",
@@ -39,7 +39,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class Categories extends Model
+class Category extends Model
 {
     use SoftDeletes;
 

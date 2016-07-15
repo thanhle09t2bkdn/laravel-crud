@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\API\CreateCategoriesAPIRequest;
-use App\Http\Requests\API\UpdateCategoriesAPIRequest;
-use App\Models\Categories;
-use App\Repositories\CategoriesRepository;
+use App\Http\Requests\API\CreateCategoryAPIRequest;
+use App\Http\Requests\API\UpdateCategoryAPIRequest;
+use App\Models\Category;
+use App\Repositories\CategoryRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\AppBaseController as InfyOmBaseController;
 use InfyOm\Generator\Criteria\LimitOffsetCriteria;
@@ -14,18 +14,18 @@ use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 /**
- * Class CategoriesController
+ * Class CategoryController
  * @package App\Http\Controllers\API
  */
 
-class CategoriesAPIController extends InfyOmBaseController
+class CategoryAPIController extends InfyOmBaseController
 {
-    /** @var  CategoriesRepository */
-    private $categoriesRepository;
+    /** @var  CategoryRepository */
+    private $categoryRepository;
 
-    public function __construct(CategoriesRepository $categoriesRepo)
+    public function __construct(CategoryRepository $categoryRepo)
     {
-        $this->categoriesRepository = $categoriesRepo;
+        $this->categoryRepository = $categoryRepo;
     }
 
     /**
@@ -35,7 +35,7 @@ class CategoriesAPIController extends InfyOmBaseController
      * @SWG\Get(
      *      path="/categories",
      *      summary="Get a listing of the Categories.",
-     *      tags={"Categories"},
+     *      tags={"Category"},
      *      description="Get all Categories",
      *      produces={"application/json"},
      *      @SWG\Response(
@@ -50,7 +50,7 @@ class CategoriesAPIController extends InfyOmBaseController
      *              @SWG\Property(
      *                  property="data",
      *                  type="array",
-     *                  @SWG\Items(ref="#/definitions/Categories")
+     *                  @SWG\Items(ref="#/definitions/Category")
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -62,29 +62,29 @@ class CategoriesAPIController extends InfyOmBaseController
      */
     public function index(Request $request)
     {
-        $this->categoriesRepository->pushCriteria(new RequestCriteria($request));
-        $this->categoriesRepository->pushCriteria(new LimitOffsetCriteria($request));
-        $categories = $this->categoriesRepository->all();
+        $this->categoryRepository->pushCriteria(new RequestCriteria($request));
+        $this->categoryRepository->pushCriteria(new LimitOffsetCriteria($request));
+        $categories = $this->categoryRepository->all();
 
         return $this->sendResponse($categories->toArray(), 'Categories retrieved successfully');
     }
 
     /**
-     * @param CreateCategoriesAPIRequest $request
+     * @param CreateCategoryAPIRequest $request
      * @return Response
      *
      * @SWG\Post(
      *      path="/categories",
-     *      summary="Store a newly created Categories in storage",
-     *      tags={"Categories"},
-     *      description="Store Categories",
+     *      summary="Store a newly created Category in storage",
+     *      tags={"Category"},
+     *      description="Store Category",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="body",
      *          in="body",
-     *          description="Categories that should be stored",
+     *          description="Category that should be stored",
      *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Categories")
+     *          @SWG\Schema(ref="#/definitions/Category")
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -97,7 +97,7 @@ class CategoriesAPIController extends InfyOmBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Categories"
+     *                  ref="#/definitions/Category"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -107,13 +107,13 @@ class CategoriesAPIController extends InfyOmBaseController
      *      )
      * )
      */
-    public function store(CreateCategoriesAPIRequest $request)
+    public function store(CreateCategoryAPIRequest $request)
     {
         $input = $request->all();
 
-        $categories = $this->categoriesRepository->create($input);
+        $categories = $this->categoryRepository->create($input);
 
-        return $this->sendResponse($categories->toArray(), 'Categories saved successfully');
+        return $this->sendResponse($categories->toArray(), 'Category saved successfully');
     }
 
     /**
@@ -122,13 +122,13 @@ class CategoriesAPIController extends InfyOmBaseController
      *
      * @SWG\Get(
      *      path="/categories/{id}",
-     *      summary="Display the specified Categories",
-     *      tags={"Categories"},
-     *      description="Get Categories",
+     *      summary="Display the specified Category",
+     *      tags={"Category"},
+     *      description="Get Category",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of Categories",
+     *          description="id of Category",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -144,7 +144,7 @@ class CategoriesAPIController extends InfyOmBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Categories"
+     *                  ref="#/definitions/Category"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -156,30 +156,30 @@ class CategoriesAPIController extends InfyOmBaseController
      */
     public function show($id)
     {
-        /** @var Categories $categories */
-        $categories = $this->categoriesRepository->find($id);
+        /** @var Category $category */
+        $category = $this->categoryRepository->find($id);
 
-        if (empty($categories)) {
-            return Response::json(ResponseUtil::makeError('Categories not found'), 404);
+        if (empty($category)) {
+            return Response::json(ResponseUtil::makeError('Category not found'), 404);
         }
 
-        return $this->sendResponse($categories->toArray(), 'Categories retrieved successfully');
+        return $this->sendResponse($category->toArray(), 'Category retrieved successfully');
     }
 
     /**
      * @param int $id
-     * @param UpdateCategoriesAPIRequest $request
+     * @param UpdateCategoryAPIRequest $request
      * @return Response
      *
      * @SWG\Put(
      *      path="/categories/{id}",
-     *      summary="Update the specified Categories in storage",
-     *      tags={"Categories"},
-     *      description="Update Categories",
+     *      summary="Update the specified Category in storage",
+     *      tags={"Category"},
+     *      description="Update Category",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of Categories",
+     *          description="id of Category",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -187,9 +187,9 @@ class CategoriesAPIController extends InfyOmBaseController
      *      @SWG\Parameter(
      *          name="body",
      *          in="body",
-     *          description="Categories that should be updated",
+     *          description="Category that should be updated",
      *          required=false,
-     *          @SWG\Schema(ref="#/definitions/Categories")
+     *          @SWG\Schema(ref="#/definitions/Category")
      *      ),
      *      @SWG\Response(
      *          response=200,
@@ -202,7 +202,7 @@ class CategoriesAPIController extends InfyOmBaseController
      *              ),
      *              @SWG\Property(
      *                  property="data",
-     *                  ref="#/definitions/Categories"
+     *                  ref="#/definitions/Category"
      *              ),
      *              @SWG\Property(
      *                  property="message",
@@ -212,20 +212,20 @@ class CategoriesAPIController extends InfyOmBaseController
      *      )
      * )
      */
-    public function update($id, UpdateCategoriesAPIRequest $request)
+    public function update($id, UpdateCategoryAPIRequest $request)
     {
         $input = $request->all();
 
-        /** @var Categories $categories */
-        $categories = $this->categoriesRepository->find($id);
+        /** @var Category $category */
+        $category = $this->categoryRepository->find($id);
 
-        if (empty($categories)) {
-            return Response::json(ResponseUtil::makeError('Categories not found'), 404);
+        if (empty($category)) {
+            return Response::json(ResponseUtil::makeError('Category not found'), 404);
         }
 
-        $categories = $this->categoriesRepository->update($input, $id);
+        $category = $this->categoryRepository->update($input, $id);
 
-        return $this->sendResponse($categories->toArray(), 'Categories updated successfully');
+        return $this->sendResponse($category->toArray(), 'Category updated successfully');
     }
 
     /**
@@ -234,13 +234,13 @@ class CategoriesAPIController extends InfyOmBaseController
      *
      * @SWG\Delete(
      *      path="/categories/{id}",
-     *      summary="Remove the specified Categories from storage",
-     *      tags={"Categories"},
-     *      description="Delete Categories",
+     *      summary="Remove the specified Category from storage",
+     *      tags={"Category"},
+     *      description="Delete Category",
      *      produces={"application/json"},
      *      @SWG\Parameter(
      *          name="id",
-     *          description="id of Categories",
+     *          description="id of Category",
      *          type="integer",
      *          required=true,
      *          in="path"
@@ -268,15 +268,15 @@ class CategoriesAPIController extends InfyOmBaseController
      */
     public function destroy($id)
     {
-        /** @var Categories $categories */
-        $categories = $this->categoriesRepository->find($id);
+        /** @var Category $category */
+        $category = $this->categoryRepository->find($id);
 
-        if (empty($categories)) {
-            return Response::json(ResponseUtil::makeError('Categories not found'), 404);
+        if (empty($category)) {
+            return Response::json(ResponseUtil::makeError('Category not found'), 404);
         }
 
-        $categories->delete();
+        $category->delete();
 
-        return $this->sendResponse($id, 'Categories deleted successfully');
+        return $this->sendResponse($id, 'Category deleted successfully');
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests\API;
 
-use App\Models\Categories;
+use App\Models\Test;
 use InfyOm\Generator\Request\APIRequest;
 
-class UpdateCategoriesAPIRequest extends APIRequest
+class UpdateTestAPIRequest extends APIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +24,6 @@ class UpdateCategoriesAPIRequest extends APIRequest
      */
     public function rules()
     {
-        return Categories::$rules;
+        return Test::$rules;
     }
 }
